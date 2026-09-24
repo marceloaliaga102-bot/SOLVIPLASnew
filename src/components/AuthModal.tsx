@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { AvatarPicker } from './AvatarPicker';
 import { ANIMAL_AVATARS, ECO_TITLES } from '../data/animalAvatars';
-import { X, LogIn, UserPlus, Sparkles, Loader2, ArrowRight } from 'lucide-react';
+import { X, LogIn, UserPlus, Sparkles, Loader2, ArrowRight, Eye, EyeOff, ShieldCheck, Key } from 'lucide-react';
 
 export const AuthModal: React.FC = () => {
   const {
@@ -18,6 +18,7 @@ export const AuthModal: React.FC = () => {
   // Login form state
   const [loginIdentifier, setLoginIdentifier] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [openProfileAfterLogin, setOpenProfileAfterLogin] = useState(false);
@@ -62,6 +63,8 @@ export const AuthModal: React.FC = () => {
       } else {
         setLoginError(res.message);
       }
+    } catch (err: any) {
+      setLoginError(err?.message || 'Error al conectar con el servidor. Intenta de nuevo.');
     } finally {
       setIsSubmitting(false);
     }
@@ -176,17 +179,45 @@ export const AuthModal: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Contraseña
-                </label>
-                <input
-                  type="password"
-                  required
-                  placeholder="Ingresa tu contraseña"
-                  value={loginPassword}
-                  onChange={(e) => setLoginPassword(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 outline-none text-sm text-slate-800"
-                />
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-xs font-bold text-slate-700">
+                    Contraseña
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setLoginIdentifier('solf@gmail.com');
+                      setLoginPassword('Solviplas2025!');
+                      setLoginError('');
+                    }}
+                    className="text-[11px] text-emerald-600 hover:text-emerald-700 font-bold hover:underline flex items-center gap-1"
+                    title="Autocompletar credenciales de Administrador"
+                  >
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>Rellenar Admin</span>
+                  </button>
+                </div>
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    placeholder="Ingresa tu contraseña"
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                    className="w-full px-3.5 py-2.5 pr-10 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 outline-none text-sm text-slate-800"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
+                    title={showPassword ? 'Ocultar contraseña' : 'Ver contraseña'}
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                <p className="text-[10px] text-slate-400 mt-1">
+                  Admin: solf@gmail.com / marceloaliaga181@gmail.com | Clave: Solviplas2025!
+                </p>
               </div>
 
               <div className="flex items-center gap-2 pt-1">
