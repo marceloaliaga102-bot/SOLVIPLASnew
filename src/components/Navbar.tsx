@@ -78,21 +78,23 @@ export const Navbar: React.FC = () => {
               <button
                 type="button"
                 onClick={() => {
-                  if (isLiveEditEnabled) {
+                  if (isAdmin && isLiveEditEnabled) {
                     setIsLogoModalOpen(true);
                   } else {
                     handleSelectWindow('inicio');
                   }
                 }}
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 ring-2 ring-emerald-300/30 group-hover:scale-105 transition-transform shrink-0 overflow-hidden relative"
-                title={isLiveEditEnabled ? 'Haz clic para personalizar logotipo e icono' : 'Ir al Inicio'}
+                className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 ring-2 ring-emerald-300/30 group-hover:scale-105 transition-transform shrink-0 overflow-hidden relative ${
+                  isAdmin && isLiveEditEnabled ? 'cursor-pointer ring-amber-300 ring-2' : ''
+                }`}
+                title={isAdmin && isLiveEditEnabled ? 'Haz clic para personalizar logotipo e icono' : 'Ir al Inicio'}
               >
                 <BrandLogoIcon
                   iconName={siteConfig.logoIcon}
                   logoUrl={siteConfig.logoUrl}
                   className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-950 fill-emerald-950"
                 />
-                {isLiveEditEnabled && (
+                {isAdmin && isLiveEditEnabled && (
                   <span className="absolute inset-0 bg-emerald-950/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <Palette className="w-4 h-4 text-emerald-200" />
                   </span>
@@ -122,8 +124,8 @@ export const Navbar: React.FC = () => {
               </div>
             </div>
 
-            {/* Quick Logo Customizer button when editing is enabled */}
-            {isLiveEditEnabled && (
+            {/* Quick Logo Customizer button strictly for Admin when editing is enabled */}
+            {isAdmin && isLiveEditEnabled && (
               <button
                 type="button"
                 onClick={() => setIsLogoModalOpen(true)}

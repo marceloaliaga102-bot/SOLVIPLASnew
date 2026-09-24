@@ -56,7 +56,7 @@ export const BrandLogoIcon: React.FC<{
 };
 
 export const LogoEditorModal: React.FC<LogoEditorModalProps> = ({ isOpen, onClose }) => {
-  const { siteConfig, updateSiteConfig, showToast } = useApp();
+  const { siteConfig, updateSiteConfig, showToast, isAdmin } = useApp();
 
   const [activeTab, setActiveTab] = useState<'icon' | 'image'>('icon');
   const [selectedIcon, setSelectedIcon] = useState<string>(siteConfig.logoIcon || 'Leaf');
@@ -67,7 +67,7 @@ export const LogoEditorModal: React.FC<LogoEditorModalProps> = ({ isOpen, onClos
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  if (!isOpen) return null;
+  if (!isOpen || !isAdmin) return null;
 
   // Selected icon component
   const currentIconObj = ECO_ICONS_LIST.find(i => i.id === selectedIcon) || ECO_ICONS_LIST[0];

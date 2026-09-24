@@ -22,7 +22,7 @@ const ComunidadView = lazy(() => import('./views/ComunidadView').then(m => ({ de
 const CustomSectionView = lazy(() => import('./views/CustomSectionView').then(m => ({ default: m.CustomSectionView })));
 
 const MainContent: React.FC = () => {
-  const { currentWindow, customSections, isLogoModalOpen, setIsLogoModalOpen } = useApp();
+  const { currentWindow, customSections, isLogoModalOpen, setIsLogoModalOpen, isAdmin } = useApp();
   const [showCurtain, setShowCurtain] = useState(true);
 
   // Initialize bidirectional scroll fade-in / fade-out observer
@@ -77,14 +77,14 @@ const MainContent: React.FC = () => {
       {/* Global Footer */}
       <Footer />
 
-      {/* Admin Floating Canvas Editor Toolbar */}
-      <CanvaToolbar />
+      {/* Admin Floating Canvas Editor Toolbar - Strictly Admin Only */}
+      {isAdmin && <CanvaToolbar />}
 
-      {/* Admin Section Creator Modal */}
-      <NewSectionModal />
+      {/* Admin Section Creator Modal - Strictly Admin Only */}
+      {isAdmin && <NewSectionModal />}
 
-      {/* Brand & Logo Editor Modal */}
-      <LogoEditorModal isOpen={isLogoModalOpen} onClose={() => setIsLogoModalOpen(false)} />
+      {/* Brand & Logo Editor Modal - Strictly Admin Only */}
+      {isAdmin && <LogoEditorModal isOpen={isLogoModalOpen} onClose={() => setIsLogoModalOpen(false)} />}
 
       {/* Auth & Avatar Selection Modals */}
       <AuthModal />

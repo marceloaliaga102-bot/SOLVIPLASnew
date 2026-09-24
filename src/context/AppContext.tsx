@@ -649,20 +649,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setIsSyncing(false);
   };
 
-  // Strictly check admin role: Visitors or non-admins can never be admin
-  const isAdmin = currentUser?.role === 'admin';
+  // Strictly check admin role: Visitors, logged-in guests, or non-admins can NEVER be admin
+  const isAdmin = Boolean(currentUser?.role === 'admin');
 
-  // Ensure that if user is not admin, edit mode is strictly disabled
+  // Ensure that if user is not admin, edit mode and customization are strictly disabled and purged
   useEffect(() => {
-    if (currentUser?.role !== 'admin') {
+    if (!isAdmin) {
       setIsLiveEditEnabled(false);
       setIsEditModeActive(false);
+      setIsLogoModalOpen(false);
+      setIsNewSectionModalOpen(false);
+      setIsNewProductModalOpen(false);
+      try {
+        localStorage.removeItem('solviplas_edit_mode_active');
+      } catch {}
     }
-  }, [currentUser]);
+  }, [isAdmin]);
 
   const toggleEditMode = useCallback(() => {
     if (!isAdmin) {
-      showToast('Acceso restringido: Inicia sesión como administrador para activar el modo edición.', 'warning');
+      showToast('Acceso restringido: Solo la cuenta de administrador puede personalizar la página.', 'warning');
+      setIsLiveEditEnabled(false);
+      setIsEditModeActive(false);
       return;
     }
     setIsLiveEditEnabled(prev => {
@@ -672,7 +680,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         localStorage.setItem('solviplas_edit_mode_active', JSON.stringify(next));
       } catch {}
       if (next) {
-        showToast('Modo Edición activado. Ahora puedes hacer clic en cualquier texto o foto para modificarlo.', 'info');
+        showToast('Modo Personalizar activado. Ahora puedes hacer clic en cualquier texto o foto para modificarlo.', 'info');
       } else {
         showToast('Modo Vista Previa activado. Visualizando como visitante.', 'info');
       }
@@ -1425,9 +1433,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         isProfileModalOpen,
         setIsProfileModalOpen,
 
-        isLiveEditEnabled,
+        isLiveEditEnabled: Boolean(isAdmin && isLiveEditEnabled),
         setIsLiveEditEnabled,
-        isEditModeActive,
+        isEditModeActive: Boolean(isAdmin && isEditModeActive),
         setIsEditModeActive,
         toggleEditMode,
 

@@ -6,11 +6,13 @@ import { BrandLogoIcon } from './CanvaEditor/LogoEditorModal';
 import { LiquidLineDivider } from './LiquidLineDivider';
 
 export const Footer: React.FC = () => {
-  const { siteConfig, updateSiteConfig, setCurrentWindow, isLiveEditEnabled, setIsLogoModalOpen } = useApp();
+  const { siteConfig, updateSiteConfig, setCurrentWindow, isAdmin, isLiveEditEnabled, setIsLogoModalOpen } = useApp();
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  const canEditLogo = isAdmin && isLiveEditEnabled;
 
   return (
     <footer className="bg-gradient-to-b from-slate-950 via-emerald-950/90 to-slate-950 text-emerald-100 border-t border-emerald-500/20 pt-16 pb-12 relative overflow-hidden select-none">
@@ -31,19 +33,21 @@ export const Footer: React.FC = () => {
               <button
                 type="button"
                 onClick={() => {
-                  if (isLiveEditEnabled) {
+                  if (canEditLogo) {
                     setIsLogoModalOpen(true);
                   }
                 }}
-                className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-300 via-teal-200 to-cyan-300 flex items-center justify-center text-slate-950 shadow-[0_0_18px_rgba(52,211,153,0.5)] shrink-0 overflow-hidden relative group transition-transform hover:scale-105"
-                title={isLiveEditEnabled ? 'Personalizar Logotipo' : siteConfig.siteName}
+                className={`w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-300 via-teal-200 to-cyan-300 flex items-center justify-center text-slate-950 shadow-[0_0_18px_rgba(52,211,153,0.5)] shrink-0 overflow-hidden relative group transition-transform ${
+                  canEditLogo ? 'hover:scale-105 cursor-pointer' : 'cursor-default'
+                }`}
+                title={canEditLogo ? 'Personalizar Logotipo' : siteConfig.siteName}
               >
                 <BrandLogoIcon
                   iconName={siteConfig.logoIcon}
                   logoUrl={siteConfig.logoUrl}
                   className="w-5 h-5 text-slate-950 fill-slate-950 stroke-[2.5]"
                 />
-                {isLiveEditEnabled && (
+                {canEditLogo && (
                   <span className="absolute inset-0 bg-emerald-950/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <Palette className="w-3.5 h-3.5 text-emerald-200" />
                   </span>

@@ -7,6 +7,7 @@ export const NewSectionModal: React.FC = () => {
     isNewSectionModalOpen,
     setIsNewSectionModalOpen,
     addCustomSection,
+    isAdmin,
   } = useApp();
 
   const [title, setTitle] = useState('');
@@ -16,7 +17,7 @@ export const NewSectionModal: React.FC = () => {
   const [mediaType, setMediaType] = useState<'image' | 'video'>('image');
   const [mediaUrl, setMediaUrl] = useState('');
 
-  if (!isNewSectionModalOpen) return null;
+  if (!isNewSectionModalOpen || !isAdmin) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
