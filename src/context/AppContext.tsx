@@ -961,7 +961,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     avatarAnimalId?: string;
   }): Promise<boolean> => {
     const cleanEmail = userData.email.trim().toLowerCase();
-    const isAdminAccount = cleanEmail === 'solf@gmail.com' || cleanEmail === 'marceloaliaga102@gmail.com' || cleanEmail === 'admin';
+    const isAdminAccount = cleanEmail === 'solf@gmail.com' || cleanEmail === 'marceloaliaga181@gmail.com' || cleanEmail === 'marceloaliaga102@gmail.com' || cleanEmail === 'admin';
 
     const existing = registeredUsers.find(u => u.email.toLowerCase() === cleanEmail);
     if (existing) {
@@ -1084,6 +1084,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const isAdminIdentifier =
       trimmedId === 'solf@gmail.com' ||
       trimmedId === 'solf' ||
+      trimmedId === 'marceloaliaga181@gmail.com' ||
       trimmedId === 'marceloaliaga102@gmail.com' ||
       trimmedId === 'admin' ||
       trimmedId === 'marceloaliaga102' ||
