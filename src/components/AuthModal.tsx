@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { AvatarPicker } from './AvatarPicker';
 import { ANIMAL_AVATARS, ECO_TITLES } from '../data/animalAvatars';
-import { X, LogIn, UserPlus, Sparkles, Loader2, ArrowRight, Eye, EyeOff, ShieldCheck, Key } from 'lucide-react';
+import { X, LogIn, UserPlus, Sparkles, Loader2, ArrowRight, Eye, EyeOff } from 'lucide-react';
 
 export const AuthModal: React.FC = () => {
   const {
@@ -179,24 +179,9 @@ export const AuthModal: React.FC = () => {
               </div>
 
               <div>
-                <div className="flex items-center justify-between mb-1">
-                  <label className="block text-xs font-bold text-slate-700">
-                    Contraseña
-                  </label>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setLoginIdentifier('solf@gmail.com');
-                      setLoginPassword('Solviplas2025!');
-                      setLoginError('');
-                    }}
-                    className="text-[11px] text-emerald-600 hover:text-emerald-700 font-bold hover:underline flex items-center gap-1"
-                    title="Autocompletar credenciales de Administrador"
-                  >
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                    <span>Rellenar Admin</span>
-                  </button>
-                </div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Contraseña
+                </label>
                 <div className="relative">
                   <input
                     type={showPassword ? 'text' : 'password'}
@@ -215,9 +200,6 @@ export const AuthModal: React.FC = () => {
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
-                <p className="text-[10px] text-slate-400 mt-1">
-                  Admin: solf@gmail.com / marceloaliaga181@gmail.com | Clave: Solviplas2025!
-                </p>
               </div>
 
               <div className="flex items-center gap-2 pt-1">
