@@ -67,14 +67,14 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-emerald-950/95 text-white backdrop-blur-md border-b border-emerald-800/60 shadow-lg transition-all animate-nav-slide-down">
+    <header className="sticky top-0 z-40 bg-emerald-950/95 text-white backdrop-blur-md border-b border-emerald-800/60 shadow-lg transition-all animate-nav-slide-down w-full max-w-full overflow-hidden">
       {/* Top Header Row: Logo, Search, User Auth */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-14 sm:h-20">
           
           {/* Logo & Brand Container */}
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-2.5 sm:gap-3 group text-left">
+            <div className="flex items-center gap-2 sm:gap-3 group text-left">
               <button
                 type="button"
                 onClick={() => {
@@ -84,7 +84,7 @@ export const Navbar: React.FC = () => {
                     handleSelectWindow('inicio');
                   }
                 }}
-                className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 ring-2 ring-emerald-300/30 group-hover:scale-105 transition-transform shrink-0 overflow-hidden relative ${
+                className={`w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 ring-2 ring-emerald-300/30 group-hover:scale-105 transition-transform shrink-0 overflow-hidden relative ${
                   isAdmin && isLiveEditEnabled ? 'cursor-pointer ring-amber-300 ring-2' : ''
                 }`}
                 title={isAdmin && isLiveEditEnabled ? 'Haz clic para personalizar logotipo e icono' : 'Ir al Inicio'}
@@ -92,11 +92,11 @@ export const Navbar: React.FC = () => {
                 <BrandLogoIcon
                   iconName={siteConfig.logoIcon}
                   logoUrl={siteConfig.logoUrl}
-                  className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-950 fill-emerald-950"
+                  className="w-4 h-4 sm:w-6 sm:h-6 text-emerald-950 fill-emerald-950"
                 />
                 {isAdmin && isLiveEditEnabled && (
                   <span className="absolute inset-0 bg-emerald-950/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Palette className="w-4 h-4 text-emerald-200" />
+                    <Palette className="w-3.5 h-3.5 text-emerald-200" />
                   </span>
                 )}
               </button>
@@ -106,7 +106,7 @@ export const Navbar: React.FC = () => {
                     value={siteConfig.siteName}
                     onSave={(val) => updateSiteConfig({ siteName: val })}
                     tagName="span"
-                    className="font-black text-xl sm:text-2xl tracking-tight bg-gradient-to-r from-emerald-200 via-teal-100 to-emerald-400 bg-clip-text text-transparent"
+                    className="font-black text-lg sm:text-2xl tracking-tight bg-gradient-to-r from-emerald-200 via-teal-100 to-emerald-400 bg-clip-text text-transparent"
                   />
                   <EditableText
                     value={siteConfig.logoBadge || 'Bioplásticos'}

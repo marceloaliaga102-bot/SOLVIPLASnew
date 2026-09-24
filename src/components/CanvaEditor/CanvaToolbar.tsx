@@ -33,7 +33,7 @@ export const CanvaToolbar: React.FC = () => {
     <>
       {/* Help popover if toggled */}
       {showHelp && (
-        <div className="fixed bottom-20 right-6 z-50 max-w-sm bg-slate-900/95 text-white p-4 rounded-2xl shadow-2xl border border-emerald-500/40 backdrop-blur-md text-xs animate-fadeIn">
+        <div className="fixed bottom-20 right-3 sm:right-6 z-50 max-w-[calc(100vw-1.5rem)] sm:max-w-sm bg-slate-900/95 text-white p-4 rounded-2xl shadow-2xl border border-emerald-500/40 backdrop-blur-md text-xs animate-fadeIn">
           <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-700">
             <span className="font-bold text-emerald-400 flex items-center gap-1.5">
               <Palette className="w-4 h-4" />
@@ -68,7 +68,7 @@ export const CanvaToolbar: React.FC = () => {
       )}
 
       {/* Floating Canva Dock */}
-      <aside aria-label="Canva Mode Dock" className="fixed bottom-5 right-5 z-40 flex items-center gap-1.5 sm:gap-2 p-2 rounded-2xl bg-slate-900/95 text-white shadow-2xl border border-emerald-500/50 backdrop-blur-xl animate-fadeIn">
+      <aside aria-label="Canva Mode Dock" className="fixed bottom-4 right-3 sm:bottom-5 sm:right-5 z-40 max-w-[calc(100vw-1.5rem)] flex items-center gap-1 sm:gap-2 p-1.5 sm:p-2 rounded-2xl bg-slate-900/95 text-white shadow-2xl border border-emerald-500/50 backdrop-blur-xl animate-fadeIn">
         <div className="flex items-center gap-2 pl-2 pr-1">
           <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-slate-950 shadow">
             <Palette className="w-4 h-4" />

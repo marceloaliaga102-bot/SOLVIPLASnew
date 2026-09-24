@@ -18,7 +18,7 @@ export const Hero: React.FC = () => {
       <SparkleParticles />
 
       {/* Organic background gradient glows */}
-      <div className="absolute inset-0 opacity-25 pointer-events-none">
+      <div className="absolute inset-0 opacity-25 pointer-events-none overflow-hidden">
         <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-emerald-400 blur-3xl animate-pulse" />
         <div className="absolute top-1/2 -right-32 w-96 h-96 rounded-full bg-teal-300 blur-3xl" />
         <div className="absolute -bottom-20 left-1/3 w-80 h-80 rounded-full bg-emerald-500 blur-3xl" />

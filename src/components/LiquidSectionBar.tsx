@@ -37,14 +37,15 @@ export const LiquidSectionBar: React.FC<LiquidSectionBarProps> = ({
   const [ripples, setRipples] = useState<Map<string, RippleEffect[]>>(new Map());
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => (typeof window !== 'undefined' ? window.innerWidth < 640 : false));
 
   // Geometry state for the single continuous horizontal line with active rising wave
   const [activeRect, setActiveRect] = useState<ActiveRect>(() => {
     const activeIdx = Math.max(0, sections.findIndex((s) => s.id === activeId));
     return {
-      left: activeIdx * 150 + 16,
-      width: 130,
-      totalWidth: Math.max(800, sections.length * 150 + 32),
+      left: activeIdx * 120 + 12,
+      width: 100,
+      totalWidth: Math.max(500, sections.length * 120 + 24),
     };
   });
 
@@ -56,7 +57,7 @@ export const LiquidSectionBar: React.FC<LiquidSectionBarProps> = ({
 
     const left = activeEl.offsetLeft;
     const width = activeEl.offsetWidth;
-    const totalWidth = Math.max(container.scrollWidth, container.clientWidth, 600);
+    const totalWidth = Math.max(container.scrollWidth, container.clientWidth, 400);
 
     setActiveRect({ left, width, totalWidth });
   }, [activeId]);
@@ -79,6 +80,7 @@ export const LiquidSectionBar: React.FC<LiquidSectionBarProps> = ({
     if (!container) return;
 
     const handleResize = () => {
+      setIsMobile(window.innerWidth < 640);
       measureActive();
       updateScrollState();
     };
@@ -106,7 +108,7 @@ export const LiquidSectionBar: React.FC<LiquidSectionBarProps> = ({
 
   const handleScroll = (direction: 'left' | 'right') => {
     if (!containerRef.current) return;
-    const scrollAmount = direction === 'left' ? -260 : 260;
+    const scrollAmount = direction === 'left' ? -220 : 220;
     containerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
   };
 
@@ -142,8 +144,10 @@ export const LiquidSectionBar: React.FC<LiquidSectionBarProps> = ({
   };
 
   // Generate the single continuous SVG path with an organic upward wave under the active section
-  const baselineY = 32;
-  const apexY = 10;
+  const baselineY = isMobile ? 18 : 28;
+  const apexY = isMobile ? 5 : 8;
+  const svgHeight = isMobile ? 24 : 38;
+
   const { left, width, totalWidth } = activeRect;
   const startX = Math.max(0, left + 4);
   const endX = Math.min(totalWidth, left + width - 4);
@@ -159,7 +163,7 @@ export const LiquidSectionBar: React.FC<LiquidSectionBarProps> = ({
   const waveFillPath = `M ${startX},${baselineY} C ${cp1X},${baselineY} ${cp2X},${apexY} ${centerX},${apexY} C ${cp3X},${apexY} ${cp4X},${baselineY} ${endX},${baselineY} Z`;
 
   return (
-    <div className="relative w-full border-t border-b border-emerald-500/20 bg-gradient-to-r from-emerald-950/95 via-slate-950/95 to-emerald-950/95 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_1px_0_0_rgba(255,255,255,0.06)] select-none overflow-hidden">
+    <div className="relative w-full max-w-full border-t border-b border-emerald-500/20 bg-gradient-to-r from-emerald-950/95 via-slate-950/95 to-emerald-950/95 backdrop-blur-2xl shadow-[0_4px_24px_rgba(0,0,0,0.5),inset_0_1px_0_0_rgba(255,255,255,0.06)] select-none overflow-hidden">
       
       {/* Background ambient liquid wave & light shimmer */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -168,7 +172,7 @@ export const LiquidSectionBar: React.FC<LiquidSectionBarProps> = ({
         <div className="absolute -bottom-12 right-1/4 w-80 h-24 bg-teal-400/10 rounded-full blur-2xl pointer-events-none" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 relative flex items-center min-h-[72px] sm:min-h-[80px]">
+      <div className="max-w-7xl mx-auto px-1 sm:px-4 lg:px-6 relative flex items-center min-h-[46px] sm:min-h-[64px]">
         
         {/* Left Scroll Button */}
         <div className="hidden md:flex items-center shrink-0 pr-1 z-30">
@@ -177,34 +181,34 @@ export const LiquidSectionBar: React.FC<LiquidSectionBarProps> = ({
             onClick={() => handleScroll('left')}
             disabled={!canScrollLeft}
             aria-label="Desplazar secciones a la izquierda"
-            className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-md ${
+            className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-md ${
               canScrollLeft
                 ? 'bg-emerald-900/70 hover:bg-emerald-800 text-emerald-200 hover:text-white border border-emerald-400/30 shadow-[0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:scale-110 active:scale-95 cursor-pointer'
                 : 'opacity-25 bg-emerald-950/40 text-emerald-500/30 border border-emerald-800/20 cursor-default'
             }`}
             title="Desplazar secciones a la izquierda"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
         </div>
 
         {/* Liquid Edge Fading Masks */}
-        <div className="pointer-events-none absolute left-0 sm:left-10 top-0 bottom-0 w-8 sm:w-14 bg-gradient-to-r from-emerald-950 via-emerald-950/80 to-transparent z-20" />
-        <div className="pointer-events-none absolute right-0 sm:right-10 top-0 bottom-0 w-8 sm:w-14 bg-gradient-to-l from-emerald-950 via-emerald-950/80 to-transparent z-20" />
+        <div className="pointer-events-none absolute left-0 sm:left-10 top-0 bottom-0 w-4 sm:w-12 bg-gradient-to-r from-emerald-950 via-emerald-950/80 to-transparent z-20" />
+        <div className="pointer-events-none absolute right-0 sm:right-10 top-0 bottom-0 w-4 sm:w-12 bg-gradient-to-l from-emerald-950 via-emerald-950/80 to-transparent z-20" />
 
         {/* Liquid Navigation Track */}
         <nav
           ref={containerRef}
           aria-label="Barra de secciones con nombres libres y línea animada que se alza"
-          className="relative flex items-center gap-2 sm:gap-4 overflow-x-auto whitespace-nowrap px-4 sm:px-6 no-scrollbar snap-x touch-pan-x flex-1 scroll-smooth h-[72px] sm:h-[80px]"
+          className="relative flex items-center gap-1 sm:gap-3.5 overflow-x-auto whitespace-nowrap px-2 sm:px-6 no-scrollbar snap-x touch-pan-x flex-1 scroll-smooth h-[46px] sm:h-[64px] max-w-full"
         >
           {/* ========================================================================= */}
           {/* UNA SOLA LÍNEA DEBAJO DE TODOS: Single continuous line that lifts up      */}
           {/* beneath the active section without any seams, boxes or black masks.       */}
           {/* ========================================================================= */}
           <svg
-            className="absolute left-0 bottom-0 pointer-events-none z-10 overflow-visible"
-            style={{ width: totalWidth, height: 44 }}
+            className="absolute left-0 bottom-0 pointer-events-none z-10 overflow-hidden"
+            style={{ width: totalWidth, height: svgHeight }}
             aria-hidden="true"
           >
             <defs>
@@ -240,7 +244,7 @@ export const LiquidSectionBar: React.FC<LiquidSectionBarProps> = ({
             <motion.path
               animate={{ d: continuousLinePath }}
               stroke="rgba(34, 211, 238, 0.35)"
-              strokeWidth={6}
+              strokeWidth={isMobile ? 4 : 6}
               strokeLinecap="round"
               fill="none"
               transition={{
@@ -255,7 +259,7 @@ export const LiquidSectionBar: React.FC<LiquidSectionBarProps> = ({
             <motion.path
               animate={{ d: continuousLinePath }}
               stroke="url(#singleFluidLineGrad)"
-              strokeWidth={2.8}
+              strokeWidth={isMobile ? 2.2 : 2.8}
               strokeLinecap="round"
               fill="none"
               transition={{
@@ -269,11 +273,11 @@ export const LiquidSectionBar: React.FC<LiquidSectionBarProps> = ({
             {/* Radiant liquid droplet bead at the apex of the lifted line */}
             <motion.circle
               animate={{ cx: centerX, cy: apexY }}
-              r={3.5}
+              r={isMobile ? 2.5 : 3.5}
               fill="#cffafe"
               stroke="#22d3ee"
-              strokeWidth={2}
-              className="drop-shadow-[0_0_10px_rgba(34,211,238,1)]"
+              strokeWidth={isMobile ? 1.5 : 2}
+              className="drop-shadow-[0_0_8px_rgba(34,211,238,1)]"
               transition={{
                 type: 'spring',
                 stiffness: 340,
@@ -307,14 +311,14 @@ export const LiquidSectionBar: React.FC<LiquidSectionBarProps> = ({
                 onClick={(e) => handleItemClick(e, section.id)}
                 onMouseEnter={() => setHoveredId(section.id)}
                 onMouseLeave={() => setHoveredId(null)}
-                className="relative shrink-0 snap-start flex items-center justify-center px-3.5 sm:px-5 pb-6 pt-2 h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 rounded-xl cursor-pointer group"
+                className="relative shrink-0 snap-start flex items-center justify-center px-2.5 sm:px-4 pb-2.5 sm:pb-4 pt-1 sm:pt-1.5 h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 rounded-xl cursor-pointer group"
               >
                 {/* Free typography (NO CAPSULES) that lifts as the line rises below it */}
                 <motion.div
                   animate={{
                     // When clicked, the section elevates upward to match the lifted line
-                    y: isActive ? -12 : 0,
-                    scale: isActive ? 1.08 : isHovered ? 1.03 : 1,
+                    y: isActive ? (isMobile ? -4 : -8) : 0,
+                    scale: isActive ? (isMobile ? 1.03 : 1.06) : isHovered ? 1.02 : 1,
                   }}
                   transition={{
                     type: 'spring',
@@ -322,23 +326,23 @@ export const LiquidSectionBar: React.FC<LiquidSectionBarProps> = ({
                     damping: 24,
                     mass: 0.7,
                   }}
-                  className="relative z-20 flex items-center gap-2 select-none"
+                  className="relative z-20 flex items-center gap-1.5 sm:gap-2 select-none"
                 >
                   {/* Icon with active dynamic bounce and distinct color */}
                   <div className="relative flex items-center justify-center shrink-0">
                     {isActive ? (
                       <motion.div
                         animate={{
-                          scale: [1, 1.25, 1],
-                          rotate: [0, -8, 0],
+                          scale: [1, 1.2, 1],
+                          rotate: [0, -6, 0],
                         }}
                         transition={{ duration: 0.35, ease: 'easeOut' }}
                       >
-                        <Icon className="w-4 h-4 text-cyan-300 drop-shadow-[0_0_12px_rgba(34,211,238,0.95)] stroke-[2.7]" />
+                        <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-300 drop-shadow-[0_0_10px_rgba(34,211,238,0.95)] stroke-[2.5]" />
                       </motion.div>
                     ) : (
                       <Icon
-                        className={`w-4 h-4 transition-colors duration-200 ${
+                        className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors duration-200 ${
                           isHovered ? 'text-teal-300' : 'text-emerald-400/75'
                         }`}
                       />
@@ -347,10 +351,10 @@ export const LiquidSectionBar: React.FC<LiquidSectionBarProps> = ({
 
                   {/* Section Label: Free-standing, unencapsulated, bold and vibrant when active */}
                   <span
-                    className={`whitespace-nowrap tracking-wide text-xs sm:text-sm transition-all duration-300 ${
+                    className={`whitespace-nowrap tracking-tight sm:tracking-wide text-[11px] sm:text-xs md:text-sm transition-all duration-300 ${
                       isActive
                         // ACTIVE COLOR: Luminous turquoise gradient text with specular drop glow
-                        ? 'text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 via-teal-100 to-cyan-300 font-black drop-shadow-[0_0_16px_rgba(52,211,153,0.9)]'
+                        ? 'text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 via-teal-100 to-cyan-300 font-black drop-shadow-[0_0_14px_rgba(52,211,153,0.9)]'
                         : isHovered
                         // HOVER COLOR
                         ? 'text-white font-bold'

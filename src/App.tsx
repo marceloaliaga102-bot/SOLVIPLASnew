@@ -58,7 +58,7 @@ const MainContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 selection:bg-emerald-500 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 selection:bg-emerald-500 selection:text-white w-full max-w-full overflow-x-clip">
       {/* 3-Second Diagonal Opening Curtain Presentation */}
       {showCurtain && (
         <CurtainPresentation onAnimationComplete={() => setShowCurtain(false)} />
